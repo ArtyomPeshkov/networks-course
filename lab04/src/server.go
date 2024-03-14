@@ -22,7 +22,10 @@ func httpHandler(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	reqCopy, err := http.NewRequest(req.Method, strings.Trim(req.RequestURI, "/"), req.Body)
+	newUrl := strings.Replace(strings.Trim(req.RequestURI, "/"), "https:/", "http:/", 1)
+	newUrl = strings.Replace(newUrl, "http:/", "http://", 1)
+	newUrl = strings.Replace(newUrl, "http:///", "http://", 1)
+	reqCopy, err := http.NewRequest(req.Method, newUrl, req.Body)
 	if err != nil {
 		fmt.Printf("Cloning request failed: %v\n", err)
 		w.WriteHeader(http.StatusBadRequest)
